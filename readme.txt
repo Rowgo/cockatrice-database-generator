@@ -9,9 +9,9 @@ USING THE PROJECT
 -------------------------------------------------->
 1. Install a Python interpreter. This project was created using version 3.11.9
 2. Within the file main change the constants DOCURL and the IDs within SETINFO_URL and CARDSHEET_URL_LIST to point at your google doc and it's sheets
-    - When you go to google sheets you should find somthing like this: https://docs.google.com/spreadsheets/d/yourdocurl/edit?gid=yoursheetid#gid=yoursheetid
+    - When you go to google sheets you should find something like this: https://docs.google.com/spreadsheets/d/yourdocurl/edit?gid=yoursheetid#gid=yoursheetid
     - https://docs.google.com/spreadsheets/d/yourdocurl this part is what you should put in DOCURL
-    - yoursheetid is what you should put in ID 
+    - yoursheetid is what you should put in id for the google sheet objects 
 3. run the file main.py
 
 
