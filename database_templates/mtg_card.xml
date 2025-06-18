@@ -1,0 +1,27 @@
+<card>
+  <name></name>
+  <text></text>
+  <prop>
+    <layout></layout>
+    <side></side>
+    <type></type>
+    <maintype></maintype>
+    <manacost></manacost>
+    <cmc></cmc>
+    <!--colors>R</colors-->
+    <!--coloridentity>R</coloridentity-->
+    <!--pt>0/2</pt-->
+    <!--loyalty>4</loyalty-->
+    <!--format-standard></format-standard-->
+    <!--format-commander></format-commander-->
+    <!--format-modern></format-modern-->
+    <!--format-pauper></format-pauper-->
+  </prop>
+  <set></set> <!--attributes rarity="common" uuid="12345678-abcd-1234-abcd-1234567890ab" num="42" muid="123456" picurl="http://.../image.jpg"-->
+  <!--related>Another card name</related--> <!-- attributes count=3 attach=1 exclude=1 persistent=1-->
+  <!--reverse-related>Another card name</reverse-related--> <!-- attributes count=3 attach=1 exclude=1 persistent=1-->
+  <!--token>1</token-->
+  <tablerow></tablerow>
+  <!--cipt>1</cipt-->
+  <!--upsidedown>1</upsidedown-->
+</card>
