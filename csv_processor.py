@@ -9,14 +9,14 @@ class MTGSheetProcessor:
     @classmethod
     def get_setdata(cls, setinfo_csvpath, cardsheet_csvpath_list) -> SetData:
     #   
-        set_info = cls._clean_setinfo(setinfo_csvpath)
+        set_info = cls._get_setinfo(setinfo_csvpath)
         card_list = cls._get_card_list(cardsheet_csvpath_list)
 
         set_data = SetData(set_info, card_list)
         return set_data
     
     @classmethod
-    def _clean_setinfo(cls, csv_path) -> SetInfo:
+    def _get_setinfo(cls, csv_path) -> SetInfo:
     #
         with open(csv_path, 'r', newline='') as csv_file:
             reader = csv.DictReader(csv_file)
@@ -24,7 +24,7 @@ class MTGSheetProcessor:
             cleaned_dict = {}
             setinfo = next(reader) # there should only be one row.
             for key, value in setinfo.items():
-                cleaned_key = cls._clean_key(key)
+                cleaned_key = cls._clean_key(key) # I've set it up so that you have to clean the keys to use SetInfoColumns. This is to give Sam and I some room for error when wrtiting the header for the google sheets
                 cleaned_dict[cleaned_key] = value
 
             set_name = cleaned_dict.get(SetInfoColumns.NAME.value)
@@ -50,13 +50,14 @@ class MTGSheetProcessor:
 
                 for row in dict_reader:
                     card_code = row.get(CardSheetColumns.CARD_CODE.value)
-                    card_rarity = Rarity[card_code[0]].value # this code kinda sucks. Not sure how else to do it though
+                    card_rarity = Rarity[card_code[0]].value # this code kinda sucks. Not sure how else to do it. maybe a static method that is more robust? It works though sooo.
                     card_type = row.get(CardSheetColumns.TYPE.value)
                     card_cost = row.get(CardSheetColumns.MANACOST.value)
                     card_name = row.get(CardSheetColumns.NAME.value)
+                    card_ability = row.get(CardSheetColumns.ABILITY.value)
                     if not card_name:
                         card_name = card_code
-                    card = MTGCard(name=card_name, manacost=card_cost, type=card_type, rarity=card_rarity)
+                    card = MTGCard(name=card_name, manacost=card_cost, type=card_type, rarity=card_rarity, ability=card_ability)
                     card_list.append(card)
 
         return card_list
