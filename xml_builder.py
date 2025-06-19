@@ -19,7 +19,7 @@ class MTGDatabaseBuilder:
             cls._attach_card_elem(cards_elem, card)
 
         os.makedirs('database', exist_ok=True)
-        cls._save_xml_file(root, f'database/{set_data.setinfo.longname}.xml')
+        cls._save_xml_file(root, f'databases/{set_data.setinfo.longname}.xml')
 
     @staticmethod
     def _attach_set_elem(sets_elem: Element, setinfo: SetInfo):
