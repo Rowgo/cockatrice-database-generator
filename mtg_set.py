@@ -28,7 +28,7 @@ class SetInfo:
 
 
 @dataclass
-class MTGCard:
+class MtgCard:
 
     name : str
     manacost : str
@@ -124,7 +124,7 @@ class MTGCard:
 class SetData:
 
     setinfo: SetInfo
-    card_list: list[MTGCard] 
+    card_list: list[MtgCard] 
 
     def __post_init__(self):
         """assign set code to each card"""

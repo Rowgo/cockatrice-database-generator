@@ -1,7 +1,7 @@
 # Copyright (C) Rogan Johnston 2025 all rights reserved
 from SetDownloader import SetDownloader
-from csv_processor import MTGSheetProcessor
-from xml_builder import MTGDatabaseBuilder
+from MtgSheetProcessor import MtgSheetProcessor
+from MtgDatabaseBuilder import MtgDatabaseBuilder
 from mtg_sheet import GoogleSheetUrl
 from mtg_set import SetData
 
@@ -30,9 +30,9 @@ if __name__ == '__main__':
         cardsheet_path = SetDownloader.pull_and_save(cardsheet_url, folder)
         cardsheet_path_list.append(cardsheet_path)
 
-    set_data: SetData = MTGSheetProcessor.get_setdata(setinfo_path, cardsheet_path_list)
+    set_data: SetData = MtgSheetProcessor.get_setdata(setinfo_path, cardsheet_path_list)
 
-    MTGDatabaseBuilder.build_database(set_data)
+    MtgDatabaseBuilder.build_database(set_data)
 
 
 
