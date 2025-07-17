@@ -1,4 +1,4 @@
-```markdown
+markdown
 # Google Sheets to Cockatrice Card Database Converter
 
 This project provides a Python script to generate card databases for Cockatrice from data stored in Google Sheets.
@@ -57,4 +57,3 @@ Currently, this tool primarily supports Magic: The Gathering (MTG) cards, but it
     The script has some forgiveness for how header names are typed:
     * Headers are not case-sensitive.
     * Leading or trailing spaces in header names will not affect the code's ability to use the data from that header.
-```
