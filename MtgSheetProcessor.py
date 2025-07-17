@@ -1,8 +1,8 @@
 # Copyright (C) Rogan Johnston 2025 all rights reserved
 import re
 import csv
-from mtg_set import SetData, MtgCard, SetInfo, Rarity
-from mtg_sheet import CardSheetColumns, SetInfoColumns
+from mtg_set import SetData, MtgCard, SetInfo, ERarity
+from mtg_sheet import ECardSheetColumns, ESetInfoColumns
 
 class MtgSheetProcessor:
     
@@ -27,12 +27,12 @@ class MtgSheetProcessor:
                 cleaned_key = cls._clean_key(key) # I've set it up so that you have to clean the keys to use SetInfoColumns. This is to give Sam and I some room for error when wrtiting the header for the google sheets
                 cleaned_dict[cleaned_key] = value
 
-            set_name = cleaned_dict.get(SetInfoColumns.NAME.value)
-            set_code = cleaned_dict.get(SetInfoColumns.SET_CODE.value)
-            set_type = cleaned_dict.get(SetInfoColumns.SET_TYPE.value)
-            set_size = int(cleaned_dict.get(SetInfoColumns.SET_SIZE.value))
-            set_version = cleaned_dict.get(SetInfoColumns.VERSION.value)
-            set_release_date = cleaned_dict.get(SetInfoColumns.RELEASE_DATE.value)
+            set_name = cleaned_dict.get(ESetInfoColumns.NAME.value)
+            set_code = cleaned_dict.get(ESetInfoColumns.SET_CODE.value)
+            set_type = cleaned_dict.get(ESetInfoColumns.SET_TYPE.value)
+            set_size = int(cleaned_dict.get(ESetInfoColumns.SET_SIZE.value))
+            set_version = cleaned_dict.get(ESetInfoColumns.VERSION.value)
+            set_release_date = cleaned_dict.get(ESetInfoColumns.RELEASE_DATE.value)
 
             clean_setinfo = SetInfo(longname=set_name, name=set_code, type=set_type, size=set_size, version=set_version, release_date=set_release_date)
 
@@ -49,12 +49,12 @@ class MtgSheetProcessor:
                 dict_reader = csv.DictReader(csv_file)
 
                 for row in dict_reader:
-                    card_code = row.get(CardSheetColumns.CARD_CODE.value)
-                    card_rarity = Rarity[card_code[0]].value # this code kinda sucks. Not sure how else to do it. maybe a static method that is more robust? It works though sooo.
-                    card_type = row.get(CardSheetColumns.TYPE.value)
-                    card_cost = row.get(CardSheetColumns.MANACOST.value)
-                    card_name = row.get(CardSheetColumns.NAME.value)
-                    card_ability = row.get(CardSheetColumns.ABILITY.value)
+                    card_code = row.get(ECardSheetColumns.CARD_CODE.value)
+                    card_rarity = ERarity[card_code[0]].value # this code kinda sucks. Not sure how else to do it. maybe a static method that is more robust? It works though sooo.
+                    card_type = row.get(ECardSheetColumns.TYPE.value)
+                    card_cost = row.get(ECardSheetColumns.MANACOST.value)
+                    card_name = row.get(ECardSheetColumns.NAME.value)
+                    card_ability = row.get(ECardSheetColumns.ABILITY.value)
                     if not card_name:
                         card_name = card_code
                     card = MtgCard(name=card_name, manacost=card_cost, type=card_type, rarity=card_rarity, ability=card_ability)
@@ -73,7 +73,7 @@ class MtgSheetProcessor:
             new_header = []
             for i in range(len(header)):
                 key = cls._clean_key(header[i])
-                if key == CardSheetColumns.NOTES.value:
+                if key == ECardSheetColumns.NOTES.value:
                     break
                 new_header.append(key)
 

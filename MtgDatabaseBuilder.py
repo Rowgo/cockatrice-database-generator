@@ -1,5 +1,5 @@
 # Copyright (C) Rogan Johnston 2025 all rights reserved
-from mtg_set import SetData, SetInfo, MtgCard, Rarity
+from mtg_set import SetData, SetInfo, MtgCard, ERarity
 import xml.etree.ElementTree as ET
 from xml.etree.ElementTree import Element
 import os
@@ -98,7 +98,7 @@ class MtgDatabaseBuilder:
         format_commander_elem.text = 'legal' # I'll hard code these values for now, but if Sam and I ever want to start deciding what cards should be legal for what then the MTGCard class should have a legal format list and should handle this logic.
         format_modern_elem = ET.SubElement(prop_elem, 'format-modern')
         format_modern_elem.text = 'legal' # I'll hard code these values for now, but if Sam and I ever want to start deciding what cards should be legal for what then the MTGCard class should have a legal format list and should handle this logic.
-        if card.rarity == Rarity.C.value or Rarity.U.value:
+        if card.rarity == ERarity.C.value or ERarity.U.value:
             format_pauper_elem = ET.SubElement(prop_elem, 'format-pauper')
             format_pauper_elem.text = 'legal' # I'll hard code these values for now, but if Sam and I ever want to start deciding what cards should be legal for what then the MTGCard class should have a legal format list and should handle this logic.    
 

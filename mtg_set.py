@@ -8,7 +8,7 @@ COLOR_ORDER = ['C', 'W', 'U', 'B', 'R', 'G']
 TYPE_ORDER =  ['Instant', 'Sorcery', 'Enchantment', 'Artifact', 'Battle', 'Land', 'Creature', 'Planeswalker']
 
 @property
-class Rarity(StrEnum):
+class ERarity(StrEnum):
     C = "common"
     U = "uncommon"
     R = "rare"

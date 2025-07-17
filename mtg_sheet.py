@@ -18,7 +18,7 @@ class GoogleSheetUrl:
         return f'.{self.export_type}'
     
 @property
-class SetInfoColumns(StrEnum):
+class ESetInfoColumns(StrEnum):
     NAME = 'name'
     SET_CODE = 'set_code'
     SET_TYPE = 'set_type'
@@ -27,7 +27,7 @@ class SetInfoColumns(StrEnum):
     RELEASE_DATE = 'release_date'
 
 @property
-class CardSheetColumns(StrEnum):
+class ECardSheetColumns(StrEnum):
 
     CARD_CODE = 'card_code'
     NAME = 'name'
