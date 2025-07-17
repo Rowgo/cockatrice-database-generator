@@ -1,5 +1,5 @@
 # Copyright (C) Rogan Johnston 2025 all rights reserved
-from downloader import SetDownloader
+from SetDownloader import SetDownloader
 from csv_processor import MTGSheetProcessor
 from xml_builder import MTGDatabaseBuilder
 from mtg_sheet import GoogleSheetUrl
