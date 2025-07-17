@@ -1,4 +1,3 @@
-markdown
 # Google Sheets to Cockatrice Card Database Converter
 
 This project provides a Python script to generate card databases for Cockatrice from data stored in Google Sheets.
