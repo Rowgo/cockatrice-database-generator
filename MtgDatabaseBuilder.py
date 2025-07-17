@@ -1,10 +1,10 @@
 # Copyright (C) Rogan Johnston 2025 all rights reserved
-from mtg_set import SetData, SetInfo, MTGCard, Rarity
+from mtg_set import SetData, SetInfo, MtgCard, Rarity
 import xml.etree.ElementTree as ET
 from xml.etree.ElementTree import Element
 import os
 
-class MTGDatabaseBuilder:
+class MtgDatabaseBuilder:
     """This class creats an xml file that can be used for the cockatrice data base."""
 
     @classmethod
@@ -36,7 +36,7 @@ class MTGDatabaseBuilder:
         sets_elem.append(set_elem)
     
     @classmethod
-    def _attach_card_elem(cls, cards_elem: Element, card: MTGCard):
+    def _attach_card_elem(cls, cards_elem: Element, card: MtgCard):
 
         card_tree = ET.parse('database_templates\mtg_card.xml')
         card_elem = card_tree.getroot()
@@ -68,7 +68,7 @@ class MTGDatabaseBuilder:
         cards_elem.append(card_elem)
 
     @staticmethod
-    def _populate_prop_elem(prop_elem: Element, card: MTGCard):
+    def _populate_prop_elem(prop_elem: Element, card: MtgCard):
         
         prop_elem.find('layout').text = 'normal'
         prop_elem.find('side').text = 'front' 

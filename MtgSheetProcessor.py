@@ -1,10 +1,10 @@
 # Copyright (C) Rogan Johnston 2025 all rights reserved
 import re
 import csv
-from mtg_set import SetData, MTGCard, SetInfo, Rarity
+from mtg_set import SetData, MtgCard, SetInfo, Rarity
 from mtg_sheet import CardSheetColumns, SetInfoColumns
 
-class MTGSheetProcessor:
+class MtgSheetProcessor:
     
     @classmethod
     def get_setdata(cls, setinfo_csvpath, cardsheet_csvpath_list) -> SetData:
@@ -39,7 +39,7 @@ class MTGSheetProcessor:
         return clean_setinfo
 
     @classmethod
-    def _get_card_list(cls, csv_path_list) -> list[MTGCard]:
+    def _get_card_list(cls, csv_path_list) -> list[MtgCard]:
 
         card_list = []
         for csv_path in csv_path_list:
@@ -57,7 +57,7 @@ class MTGSheetProcessor:
                     card_ability = row.get(CardSheetColumns.ABILITY.value)
                     if not card_name:
                         card_name = card_code
-                    card = MTGCard(name=card_name, manacost=card_cost, type=card_type, rarity=card_rarity, ability=card_ability)
+                    card = MtgCard(name=card_name, manacost=card_cost, type=card_type, rarity=card_rarity, ability=card_ability)
                     card_list.append(card)
 
         return card_list
