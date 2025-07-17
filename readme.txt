@@ -1,39 +1,60 @@
-DESCRIPTION
--------------------------------------------------->
-This is a project that is for creating card databases for cockatirice using google sheets.
+```markdown
+# Google Sheets to Cockatrice Card Database Converter
 
-Currently the data base only supports MTG cards, but it could be expanded to support others.
+This project provides a Python script to generate card databases for Cockatrice from data stored in Google Sheets.
 
+## Description
 
-USING THE PROJECT
--------------------------------------------------->
-1. Install a Python interpreter. This project was created using version 3.11.9
-2. Within the file main change the constants DOCURL and the IDs within SETINFO_URL and CARDSHEET_URL_LIST to point at your google doc and it's sheets
-    - When you go to google sheets you should find something like this: https://docs.google.com/spreadsheets/d/yourdocurl/edit?gid=yoursheetid#gid=yoursheetid
-    - https://docs.google.com/spreadsheets/d/yourdocurl this part is what you should put in DOCURL
-    - yoursheetid is what you should put in id for the google sheet objects 
-3. run the file main.py
+Currently, this tool primarily supports Magic: The Gathering (MTG) cards, but it is designed with the potential for expansion to other card games.
 
+## Usage
 
-MUST FOLLOW
--------------------------------------------------->
-do not change the variable EXPORT_TYPE the project currently doesn't support any file types other than csv 
+1.  **Install Python:** Ensure you have a Python interpreter installed. This project was developed and tested with Python 3.11.9.
 
-The data you wish to use in your google sheets must start at A-0
+2.  **Configure Google Sheet URLs:**
+    * Open the `main.py` file.
+    * Locate the constants `DOCURL`, `SETINFO_URL`, and `CARDSHEET_URL_LIST`.
+    * Update these constants to point to your specific Google Sheet document and its individual sheets.
 
-Your google sheet document must have a set info sheet and some sheets for card lists.
+    **Finding your Google Sheet URLs and IDs:**
+    When you open a Google Sheet, your URL will typically look like this:
+    `https://docs.google.com/spreadsheets/d/YOUR_DOC_URL/edit?gid=YOUR_SHEET_ID#gid=YOUR_SHEET_ID`
 
-set info sheets must follow use the header names:
-Name | Set Code | Set Type | Set Size | Version | Release Date
+    * `YOUR_DOC_URL`: This portion (e.g., `yourdocurl`) should be used for the `DOCURL` constant.
+    * `YOUR_SHEET_ID`: This numerical ID (e.g., `yoursheetid`) should be used for the `id` parameter within the `GoogleSheet` objects in `SETINFO_URL` and `CARDSHEET_URL_LIST`.
 
-Card sheets must follow use the header names: 
-Card Code | Name | Manacost | Art | Type | Ability | PT | Notes
-    
-    - notes is an optional name but must be placed at the end of the table. (The data within the notes column will be ignored)
-    - the header 'Card Code' must be first
-    - in order for a row to be recognized as a card row the first cell must use a card code that follows the format of: AA00
-    - the first letter of a card code is used to determine thee cards rarity C = common U = Uncommon R = Rare M = Mythic
+3.  **Run the Script:** Execute the `main.py` file:
+    ```bash
+    python main.py
+    ```
 
-there is some forgivness to how header names can be typed
-    - the headers are not case sensitive
-    - and spaces before or after the column header will not effect the code's ability to use the data from that header.
+## Important Considerations
+
+* **`EXPORT_TYPE` Variable:** Do not modify the `EXPORT_TYPE` variable. The project currently only supports exporting data in CSV format.
+* **Data Starting Point:** The data block within your Google Sheets must begin at cell `A1` (row 0, column A).
+* **Sheet Structure:**
+    * Your Google Sheet document **must** contain a "Set Info" sheet and one or more sheets for card lists.
+* **Header Names - Set Info Sheet:**
+    The "Set Info" sheet must use the following header names exactly (case-insensitive and leading/trailing spaces are ignored):
+    | Name | Set Code | Set Type | Set Size | Version | Release Date |
+    | :--- | :------- | :------- | :------- | :------ | :----------- |
+* **Header Names - Card Sheets:**
+    Card sheets must use the following header names (case-insensitive and leading/trailing spaces are ignored):
+    | Card Code | Name | Manacost | Art | Type | Ability | PT | Notes |
+    | :-------- | :--- | :------- | :-- | :--- | :------ | :- | :---- |
+    * `Card Code` must be the first column.
+    * `Notes` is an optional column, but if present, it must be the last column in the table. Data within the `Notes` column will be ignored.
+* **Card Code Format:**
+    For a row to be recognized as a card entry, the first cell in that row (`Card Code` column) must use a card code following the format: `AA00`.
+    | Format | Rarity Determination |
+    | :----- | :------------------- |
+    | `C` | Common |
+    | `U` | Uncommon |
+    | `R` | Rare |
+    | `M` | Mythic |
+    The first letter of a card code is used to determine the card's rarity.
+* **Header Name Flexibility:**
+    The script has some forgiveness for how header names are typed:
+    * Headers are not case-sensitive.
+    * Leading or trailing spaces in header names will not affect the code's ability to use the data from that header.
+```
