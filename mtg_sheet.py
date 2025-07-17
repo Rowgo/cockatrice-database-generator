@@ -17,7 +17,7 @@ class GoogleSheetUrl:
     def get_export_extension(self) -> str:
         return f'.{self.export_type}'
     
-@dataclass
+@property
 class SetInfoColumns(StrEnum):
     NAME = 'name'
     SET_CODE = 'set_code'
@@ -26,7 +26,7 @@ class SetInfoColumns(StrEnum):
     VERSION = 'version'
     RELEASE_DATE = 'release_date'
 
-@dataclass
+@property
 class CardSheetColumns(StrEnum):
 
     CARD_CODE = 'card_code'

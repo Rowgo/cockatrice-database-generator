@@ -7,7 +7,7 @@ from typing import Optional
 COLOR_ORDER = ['C', 'W', 'U', 'B', 'R', 'G']
 TYPE_ORDER =  ['Instant', 'Sorcery', 'Enchantment', 'Artifact', 'Battle', 'Land', 'Creature', 'Planeswalker']
 
-@dataclass
+@property
 class Rarity(StrEnum):
     C = "common"
     U = "uncommon"
