@@ -1,7 +1,7 @@
 # Copyright (C) Rogan Johnston 2025 all rights reserved
 from dataclasses import dataclass
 from typing import List, Dict
-from enum import Enum
+from enum import StrEnum
 
 @dataclass
 class GoogleSheetUrl:
@@ -18,7 +18,7 @@ class GoogleSheetUrl:
         return f'.{self.export_type}'
     
 @dataclass
-class SetInfoColumns(str, Enum):
+class SetInfoColumns(StrEnum):
     NAME = 'name'
     SET_CODE = 'set_code'
     SET_TYPE = 'set_type'
@@ -27,7 +27,7 @@ class SetInfoColumns(str, Enum):
     RELEASE_DATE = 'release_date'
 
 @dataclass
-class CardSheetColumns(str, Enum):
+class CardSheetColumns(StrEnum):
 
     CARD_CODE = 'card_code'
     NAME = 'name'

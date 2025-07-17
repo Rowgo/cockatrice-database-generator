@@ -1,6 +1,6 @@
 # Copyright (C) Rogan Johnston 2025 all rights reserved
 import re
-from enum import Enum
+from enum import StrEnum
 from dataclasses import dataclass
 from typing import Optional
 
@@ -8,7 +8,7 @@ COLOR_ORDER = ['C', 'W', 'U', 'B', 'R', 'G']
 TYPE_ORDER =  ['Instant', 'Sorcery', 'Enchantment', 'Artifact', 'Battle', 'Land', 'Creature', 'Planeswalker']
 
 @dataclass
-class Rarity(Enum):
+class Rarity(StrEnum):
     C = "common"
     U = "uncommon"
     R = "rare"
@@ -111,7 +111,8 @@ class MtgCard:
     @staticmethod
     def _sort_colors(iterable_colors) -> str:
         """ Used to sort an iterable object into a string that follows the order of CWUBRG. 
-        This should be used to clean up any color based data that will be used for the database."""
+        This should be used to clean up any color based data that will be used for the database.
+        """
         sorted_colors = ''
         for c in COLOR_ORDER:
             for item in iterable_colors:
