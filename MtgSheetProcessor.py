@@ -7,7 +7,7 @@ from mtg_sheet import CardSheetColumns, SetInfoColumns
 class MtgSheetProcessor:
     
     @classmethod
-    def get_setdata(cls, setinfo_csvpath, cardsheet_csvpath_list) -> SetData:
+    def get_setdata(cls, setinfo_csvpath, cardsheet_csvpath_list: list) -> SetData:
 
         set_info = cls._get_setinfo(setinfo_csvpath)
         card_list = cls._get_card_list(cardsheet_csvpath_list)
@@ -39,7 +39,7 @@ class MtgSheetProcessor:
         return clean_setinfo
 
     @classmethod
-    def _get_card_list(cls, csv_path_list) -> list[MtgCard]:
+    def _get_card_list(cls, csv_path_list: list) -> list[MtgCard]:
 
         card_list = []
         for csv_path in csv_path_list:
