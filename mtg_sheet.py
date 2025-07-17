@@ -5,7 +5,7 @@ from enum import Enum
 
 @dataclass
 class GoogleSheetUrl:
-    #
+    
     sheet_name : str
     doc_url : str
     export_type : str
@@ -28,7 +28,7 @@ class SetInfoColumns(str, Enum):
 
 @dataclass
 class CardSheetColumns(str, Enum):
-#
+
     CARD_CODE = 'card_code'
     NAME = 'name'
     MANACOST = 'manacost'

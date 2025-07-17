@@ -6,6 +6,7 @@ from mtg_sheet import GoogleSheetUrl
 from mtg_set import SetData
 
 if __name__ == '__main__':
+
     DOC_URL = 'https://docs.google.com/spreadsheets/d/1f3jWL21p7YiIwsrQ3gG59_kV5k5blZxJzk8c2dBEe0s'
     EXPORT_TYPE = 'csv'
 

@@ -5,10 +5,10 @@ from mtg_set import SetData, MTGCard, SetInfo, Rarity
 from mtg_sheet import CardSheetColumns, SetInfoColumns
 
 class MTGSheetProcessor:
-#
+    
     @classmethod
     def get_setdata(cls, setinfo_csvpath, cardsheet_csvpath_list) -> SetData:
-    #   
+
         set_info = cls._get_setinfo(setinfo_csvpath)
         card_list = cls._get_card_list(cardsheet_csvpath_list)
 
@@ -17,7 +17,7 @@ class MTGSheetProcessor:
     
     @classmethod
     def _get_setinfo(cls, csv_path) -> SetInfo:
-    #
+
         with open(csv_path, 'r', newline='') as csv_file:
             reader = csv.DictReader(csv_file)
 
@@ -40,7 +40,7 @@ class MTGSheetProcessor:
 
     @classmethod
     def _get_card_list(cls, csv_path_list) -> list[MTGCard]:
-    #
+
         card_list = []
         for csv_path in csv_path_list:
             cls._clean_cardsheet(csv_path)
@@ -64,7 +64,7 @@ class MTGSheetProcessor:
 
     @classmethod
     def _clean_cardsheet(cls, csv_path):
-    #
+
         print('Cleaning: ' + csv_path)
         clean_cardsheet = []
         with open(csv_path, 'r', newline='') as csv_file:
@@ -94,7 +94,7 @@ class MTGSheetProcessor:
 
     @staticmethod
     def _clean_key(key: str):
-    # format the key to be inline with cockatrice's tag naming conventions.
+        """format the key to be inline with cockatrice's tag naming conventions."""
         lower_key = key.lower()
         striped_key = lower_key.strip()
         snakecase_key = re.sub(r' ', '_', striped_key)

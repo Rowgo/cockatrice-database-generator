@@ -5,7 +5,8 @@ from xml.etree.ElementTree import Element
 import os
 
 class MTGDatabaseBuilder:
-    # Creating the xml file that will be used for the cockatrice data base.
+    """This class creats an xml file that can be used for the cockatrice data base."""
+
     @classmethod
     def build_database(cls, set_data: SetData):
         tree = ET.parse('database_templates\carddatabase.xml')
@@ -23,7 +24,7 @@ class MTGDatabaseBuilder:
 
     @staticmethod
     def _attach_set_elem(sets_elem: Element, setinfo: SetInfo):
-        #
+
         set_tree = ET.parse('database_templates\mtg_set.xml')
         set_elem = set_tree.getroot()
 
@@ -36,7 +37,7 @@ class MTGDatabaseBuilder:
     
     @classmethod
     def _attach_card_elem(cls, cards_elem: Element, card: MTGCard):
-        #
+
         card_tree = ET.parse('database_templates\mtg_card.xml')
         card_elem = card_tree.getroot()
 
@@ -68,7 +69,7 @@ class MTGDatabaseBuilder:
 
     @staticmethod
     def _populate_prop_elem(prop_elem: Element, card: MTGCard):
-        # broke up element creation into serperate functions to keep each function short. This also helps locate what element creation caused a bug when debugging.
+        
         prop_elem.find('layout').text = 'normal'
         prop_elem.find('side').text = 'front' 
         prop_elem.find('type').text = card.type
@@ -103,7 +104,7 @@ class MTGDatabaseBuilder:
 
     @staticmethod
     def _save_xml_file(xml_root, save_path):
-        #
+        
         tree = ET.ElementTree(xml_root)
         ET.indent(tree, space="    ")
         tree.write(save_path, encoding="utf-8", xml_declaration=True)
