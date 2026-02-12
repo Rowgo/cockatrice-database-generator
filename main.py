@@ -1,7 +1,7 @@
 # Copyright (C) Rogan Johnston 2025 all rights reserved
-from SetDownloader import SetDownloader
-from MtgSheetProcessor import MtgSheetProcessor
-from MtgDatabaseBuilder import MtgDatabaseBuilder
+from set_downloader import SetDownloader
+from mtg_sheet_processor import MtgSheetProcessor
+from mtg_database_builder import MtgDatabaseBuilder
 from mtg_sheet import GoogleSheetUrl
 from mtg_set import SetData
 
