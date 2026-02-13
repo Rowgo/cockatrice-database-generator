@@ -2,14 +2,16 @@
 from mtg_set import SetData, SetInfo, MtgCard, ERarity
 import xml.etree.ElementTree as ET
 from xml.etree.ElementTree import Element
+from pathlib import Path
 import os
+
 
 class MtgDatabaseBuilder:
     """This class creats an xml file that can be used for the cockatrice data base."""
 
     @classmethod
     def build_database(cls, set_data: SetData):
-        tree = ET.parse('database_templates\carddatabase.xml')
+        tree = ET.parse(Path('database_templates\carddatabase.xml'))
         root = tree.getroot()
         sets_elem = root.find('sets')
         cards_elem = root.find('cards')
@@ -20,12 +22,12 @@ class MtgDatabaseBuilder:
             cls._attach_card_elem(cards_elem, card)
 
         os.makedirs('database', exist_ok=True)
-        cls._save_xml_file(root, f'databases/{set_data.setinfo.longname}.xml')
+        cls._save_xml_file(root, Path(f'databases/{set_data.setinfo.longname}.xml'))
 
     @staticmethod
     def _attach_set_elem(sets_elem: Element, setinfo: SetInfo):
 
-        set_tree = ET.parse('database_templates\mtg_set.xml')
+        set_tree = ET.parse(Path('database_templates\mtg_set.xml'))
         set_elem = set_tree.getroot()
 
         set_elem.find('name').text = setinfo.name 
@@ -38,10 +40,9 @@ class MtgDatabaseBuilder:
     @classmethod
     def _attach_card_elem(cls, cards_elem: Element, card: MtgCard):
 
-        card_tree = ET.parse('database_templates\mtg_card.xml')
+        card_tree = ET.parse(Path('database_templates\mtg_card.xml'))
         card_elem = card_tree.getroot()
 
-        name = card.name
         card_elem.find('name').text = card.name
         card_elem.find('text').text = card.ability
 
@@ -56,7 +57,7 @@ class MtgDatabaseBuilder:
             # add related tag
             # related card tag.text = another card name
 
-        card_elem.find('tablerow').text = str(card.get_tablerow())
+        card_elem.find('tablerow').text = str(card.tablerow)
 
         # check text for the line 'this card comes into play tapped'
         # if it has that line then 
@@ -73,16 +74,16 @@ class MtgDatabaseBuilder:
         prop_elem.find('layout').text = 'normal'
         prop_elem.find('side').text = 'front' 
         prop_elem.find('type').text = card.type
-        prop_elem.find('maintype').text = card.get_maintype()
+        prop_elem.find('maintype').text = card.maintype
         prop_elem.find('manacost').text = card.manacost
-        prop_elem.find('cmc').text = str(card.get_cmc())
+        prop_elem.find('cmc').text = str(card.cmc)
 
-        colors = card.get_colors()
+        colors = card.colors
         if colors:
             colors_elem = ET.SubElement(prop_elem, 'colors')
             colors_elem.text = colors
 
-        color_identity = card.get_coloridentity()
+        color_identity = card.coloridentity
         if color_identity:
             coloridentity_elem = ET.SubElement(prop_elem, 'coloridentity')
             coloridentity_elem.text = color_identity
@@ -92,18 +93,21 @@ class MtgDatabaseBuilder:
         if card.loyalty:
             loyalty_elem = ET.SubElement(prop_elem, 'loyalty')
             loyalty_elem.text = card.loyalty
+
+        # I'll hard code these values for now, but if Sam and I ever want to start deciding what cards should be legal for what 
+        # then the MTGCard class should have a legal format list and should handle this logic.
         format_standard_elem = ET.SubElement(prop_elem, 'format-standard')
-        format_standard_elem.text = 'legal' # I'll hard code these values for now, but if Sam and I ever want to start deciding what cards should be legal for what then the MTGCard class should have a legal format list and should handle this logic.
+        format_standard_elem.text = 'legal' 
         format_commander_elem = ET.SubElement(prop_elem, 'format-commander')
-        format_commander_elem.text = 'legal' # I'll hard code these values for now, but if Sam and I ever want to start deciding what cards should be legal for what then the MTGCard class should have a legal format list and should handle this logic.
+        format_commander_elem.text = 'legal' 
         format_modern_elem = ET.SubElement(prop_elem, 'format-modern')
-        format_modern_elem.text = 'legal' # I'll hard code these values for now, but if Sam and I ever want to start deciding what cards should be legal for what then the MTGCard class should have a legal format list and should handle this logic.
+        format_modern_elem.text = 'legal' 
         if card.rarity == ERarity.C.value or ERarity.U.value:
             format_pauper_elem = ET.SubElement(prop_elem, 'format-pauper')
-            format_pauper_elem.text = 'legal' # I'll hard code these values for now, but if Sam and I ever want to start deciding what cards should be legal for what then the MTGCard class should have a legal format list and should handle this logic.    
+            format_pauper_elem.text = 'legal'    
 
     @staticmethod
-    def _save_xml_file(xml_root, save_path):
+    def _save_xml_file(xml_root, save_path: Path):
         
         tree = ET.ElementTree(xml_root)
         ET.indent(tree, space="    ")

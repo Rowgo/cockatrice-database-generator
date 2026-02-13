@@ -17,8 +17,8 @@ class GoogleSheetUrl:
     def get_export_extension(self) -> str:
         return f'.{self.export_type}'
     
-@property
 class ESetInfoColumns(StrEnum):
+
     NAME = 'name'
     SET_CODE = 'set_code'
     SET_TYPE = 'set_type'
@@ -26,7 +26,6 @@ class ESetInfoColumns(StrEnum):
     VERSION = 'version'
     RELEASE_DATE = 'release_date'
 
-@property
 class ECardSheetColumns(StrEnum):
 
     CARD_CODE = 'card_code'
