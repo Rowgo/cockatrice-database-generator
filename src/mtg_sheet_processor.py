@@ -3,11 +3,12 @@ import re
 import csv
 from mtg_set import SetData, MtgCard, SetInfo, ERarity
 from mtg_sheet import ECardSheetColumns, ESetInfoColumns
+from pathlib import Path
 
 class MtgSheetProcessor:
     
     @classmethod
-    def get_setdata(cls, setinfo_csvpath, cardsheet_csvpath_list: list) -> SetData:
+    def get_setdata(cls, setinfo_csvpath: Path, cardsheet_csvpath_list: list[Path]) -> SetData:
 
         set_info = cls._get_setinfo(setinfo_csvpath)
         card_list = cls._get_card_list(cardsheet_csvpath_list)
@@ -16,9 +17,9 @@ class MtgSheetProcessor:
         return set_data
     
     @classmethod
-    def _get_setinfo(cls, csv_path) -> SetInfo:
+    def _get_setinfo(cls, csv_path: Path) -> SetInfo:
 
-        with open(csv_path, 'r', newline='') as csv_file:
+        with csv_path.open(mode='r', newline='', encoding='utf-8') as csv_file:
             reader = csv.DictReader(csv_file)
 
             cleaned_dict = {}
@@ -39,13 +40,13 @@ class MtgSheetProcessor:
         return clean_setinfo
 
     @classmethod
-    def _get_card_list(cls, csv_path_list: list) -> list[MtgCard]:
+    def _get_card_list(cls, csv_path_list: list[Path]) -> list[MtgCard]:
 
         card_list = []
         for csv_path in csv_path_list:
             cls._clean_cardsheet(csv_path)
 
-            with open(csv_path, 'r', newline='') as csv_file:
+            with csv_path.open(mode='r', newline='', encoding='utf-8') as csv_file:
                 dict_reader = csv.DictReader(csv_file)
 
                 for row in dict_reader:
@@ -63,11 +64,11 @@ class MtgSheetProcessor:
         return card_list
 
     @classmethod
-    def _clean_cardsheet(cls, csv_path):
+    def _clean_cardsheet(cls, csv_path: Path):
 
-        print('Cleaning: ' + csv_path)
+        print(f"Cleaning: {csv_path}")
         clean_cardsheet = []
-        with open(csv_path, 'r', newline='') as csv_file:
+        with csv_path.open(mode='r', newline='', encoding='utf-8') as csv_file:
             reader = csv.reader(csv_file)
             header = next(reader)
             new_header = []
@@ -86,7 +87,7 @@ class MtgSheetProcessor:
                         new_row.append(row[i])
                     clean_cardsheet.append(new_row)
 
-        with open(csv_path, 'w', newline='') as csv_file:
+        with csv_path.open(mode='w', newline='', encoding='utf-8') as csv_file:
             writer = csv.writer(csv_file)
             for row in clean_cardsheet:
                 writer.writerow(row)

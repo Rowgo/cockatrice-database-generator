@@ -7,7 +7,6 @@ from typing import Optional
 COLOR_ORDER = ['C', 'W', 'U', 'B', 'R', 'G']
 TYPE_ORDER =  ['Instant', 'Sorcery', 'Enchantment', 'Artifact', 'Battle', 'Land', 'Creature', 'Planeswalker']
 
-@property
 class ERarity(StrEnum):
     C = "common"
     U = "uncommon"
@@ -47,7 +46,8 @@ class MtgCard:
         sorted_manacost = self._sort_manacost(self.manacost)
         self.manacost = sorted_manacost
 
-    def get_maintype(self) -> str:
+    @property
+    def maintype(self) -> str:
 
         type_order =  ['Instant', 'Sorcery', 'Enchantment', 'Artifact', 'Battle', 'Land', 'Creature', 'Planeswalker']
         matching_types = []
@@ -58,7 +58,8 @@ class MtgCard:
 
         return maintype
 
-    def get_cmc(self) -> int:
+    @property
+    def cmc(self) -> int:
 
         cmc = 0
         digit_match = re.search(r'\d', self.manacost)
@@ -69,23 +70,26 @@ class MtgCard:
 
         return cmc
 
-    def get_colors(self) -> str:
+    @property
+    def colors(self) -> str:
 
         cost_color_set = set(re.findall(r'[WUBRG]', self.manacost))
         colors = self._sort_colors(cost_color_set)
 
         return colors
 
-    def get_coloridentity(self) -> str:
+    @property
+    def coloridentity(self) -> str:
 
         text_colors = ''.join(re.findall(r'\{([WUBRG])\}', self.ability))
-        cost_colors = self.get_colors()
+        cost_colors = self.colors
         card_color_set = set(f'{text_colors}{cost_colors}')
         color_identity = self._sort_colors(card_color_set)
 
         return color_identity
     
-    def get_tablerow(self) -> int:
+    @property
+    def tablerow(self) -> int:
         type = self.type
         match type:
             case type if 'Creature' in type: # 'Creature' should be in an Enum
@@ -97,7 +101,6 @@ class MtgCard:
             case _:
                 return 1
         
-    
     def _sort_manacost(self, manacost) -> str:
 
         digit_iterable = re.findall(r'\d', manacost)

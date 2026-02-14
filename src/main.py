@@ -4,6 +4,7 @@ from mtg_sheet_processor import MtgSheetProcessor
 from mtg_database_builder import MtgDatabaseBuilder
 from mtg_sheet import GoogleSheetUrl
 from mtg_set import SetData
+from pathlib import Path
 
 if __name__ == '__main__':
 
@@ -22,12 +23,12 @@ if __name__ == '__main__':
         GoogleSheetUrl(sheet_name='colorless_cards', doc_url=DOC_URL, export_type=EXPORT_TYPE, sheet_id='2064516960')
     ]
 
-    folder = 'wfa_sheets'
+    folder = Path('wfa_sheets')
     setinfo_path = SetDownloader.pull_and_save(SETINFO_URL, folder)
 
-    cardsheet_path_list = []
+    cardsheet_path_list : list[Path] = []
     for cardsheet_url in CARDSHEET_URL_LIST:
-        cardsheet_path = SetDownloader.pull_and_save(cardsheet_url, folder)
+        cardsheet_path : Path = SetDownloader.pull_and_save(cardsheet_url, folder)
         cardsheet_path_list.append(cardsheet_path)
 
     set_data: SetData = MtgSheetProcessor.get_setdata(setinfo_path, cardsheet_path_list)
