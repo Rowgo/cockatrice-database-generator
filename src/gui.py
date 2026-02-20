@@ -3,23 +3,16 @@ from tkinter import ttk
 from tkinter import filedialog, messagebox
 import json
 
-root = tk.Tk()
-root.title("Cockatrice Card Set Generator")
-root.geometry("400x300")
-
 class SheetPanel(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
         self.create_widgets()
 
     def create_widgets(self):
-        sheet_entry_frame = tk.Frame(root)
-        sheet_entry_frame.pack(pady=20, padx=20, fill="x")
-
-        sheet_label = tk.Label(sheet_entry_frame, text="Google sheet url that holds your card data.", font=("Arial", 12))
+        sheet_label = tk.Label(self, text="Google sheet url that holds your card data.", font=("Arial", 12))
         sheet_label.pack(pady=20, anchor="w")
 
-        sheet_entry = tk.Entry(sheet_entry_frame, width=30)
+        sheet_entry = tk.Entry(self, width=30)
         sheet_entry.pack(fill="x", expand=True)
 
 class SaveDestinationPanel(tk.Frame):
@@ -48,33 +41,91 @@ class SaveDestinationPanel(tk.Frame):
             self.save_path_entry.delete(0, tk.END)
             self.save_path_entry.insert(0, folder_path)
 
-class NavigationBar(tk.Frame):
+class SettingsWizard(tk.Tk):
+    def __init__(self, config_frames: list[type[tk.Frame]]):
+        super().__init__()
+        self.title("Cockatrice Card Set Generator")
+        self.geometry("400x300")
 
-    def __init__(self, parent):
-        super().__init__(parent)
-        self.create_widgets()
+        self.frame_order = []
+        self.current_index = 0
+        self.frame_stack: list[tk.Frame] = []
+        self.current_frame: tk.Frame = None
+
+        self._setup_frames(config_frames=config_frames)
+        self._setup_navigation()
+        self._push_frame(self.frame_order[self.current_index])
     
-    def create_widgets(self):
-        navigation_frame = tk.Frame(root)
-        navigation_frame.pack(padx=20, pady=20, anchor="s")
+    def _setup_frames(self, config_frames: list[type[tk.Frame]]):
+        for Frame in config_frames:
+            frame = Frame(self)
+            self.frame_order.append(frame)
+    
+    def _setup_navigation(self):
+        self.navigation_frame = tk.Frame(self)
+        self.navigation_frame.pack(fill="x")
 
-        back_button = tk.Button(navigation_frame, text="Back", command=lambda:self._navigate_back())
-        back_button.pack(padx=20, side="left")
+        self.back_button = tk.Button(self.navigation_frame, text="Back", command=lambda:self._navigate_back())
 
-        next_button = tk.Button(navigation_frame, text="Next", command=lambda:self._navigate_next())
-        next_button.pack(padx=20, side="left")
-
-    def _navigate_back(self, event=None):
-        pass
+        self.next_button = tk.Button(self.navigation_frame, text="Next", command=lambda:self._navigate_next())
+        self.next_button.pack(padx=20, side="left")
 
     def _navigate_next(self, event=None):
+        self.current_index += 1
+
+        if self.current_index > len(self.frame_order) - 1:
+            self._quit()
+            return
+
+        self._push_frame(self.frame_order[self.current_index])
+
+        if self.current_index == 1:
+            self.back_button.pack(before=self.next_button, padx=20, side="left")
+
+        if self.current_index == len(self.frame_order) - 1:
+            self.next_button.config(text="Finish")
+        else:
+            self.next_button.config(text="Next")
+
+    def _navigate_back(self, event=None):
+        if self.current_index <= 0:
+            return
+        
+        self._pop_frame()
+        self.current_index -= 1
+
+        if self.current_index == 0:
+            self.back_button.pack_forget
+
+    def _push_frame(self, frame_to_push: tk.Frame):
+        """Put a frame onto the stack and make it visible"""
+        if self.current_frame:
+            self.current_frame.pack_forget()
+
+        self.frame_stack.append(frame_to_push)
+        frame_to_push.pack(fill="both", expand=True)
+        self.current_frame = frame_to_push
+
+    def _pop_frame(self):
+        """Return to the previous frame"""
+        self.current_frame.pack_forget()
+        previous_frame: tk.Frame = self.frame_stack.pop()
+
+        if previous_frame:
+            previous_frame.pack(fill="both", expand=True)
+            self.current_frame = previous_frame
+
+    def _quit(self):
+        self.destroy()
+
+class SaveFileManager():
+    def save(key, value):
         pass
 
-sheet_panel = SheetPanel(root)
+    def load(key):
+        pass
 
-save_destination_panel = SaveDestinationPanel(root)
-save_destination_panel.pack(padx=20, pady=20, fill="x", expand=True)
-
-navigation_bar = NavigationBar(root)
+panel_list = [SheetPanel, SaveDestinationPanel]
+root = SettingsWizard(panel_list)
 
 root.mainloop()
