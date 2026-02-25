@@ -1,3 +1,4 @@
 wfa_sheets/
 databases/
 __pycache__/
+*.json
