@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog, messagebox
-import json
+from save_file_manager import SaveFileManager
 
 class SheetPanel(tk.Frame):
     def __init__(self, parent):
@@ -14,6 +14,10 @@ class SheetPanel(tk.Frame):
 
         sheet_entry = tk.Entry(self, width=30)
         sheet_entry.pack(fill="x", expand=True)
+
+    @property
+    def entry_data():
+        pass
 
 class SaveDestinationPanel(tk.Frame):
     def __init__(self, parent):
@@ -40,6 +44,10 @@ class SaveDestinationPanel(tk.Frame):
         if folder_path:
             self.save_path_entry.delete(0, tk.END)
             self.save_path_entry.insert(0, folder_path)
+
+    @property
+    def entry_data():
+        pass
 
 class SettingsWizard(tk.Tk):
     def __init__(self, config_frames: list[type[tk.Frame]]):
@@ -71,6 +79,7 @@ class SettingsWizard(tk.Tk):
         self.next_button.pack(padx=20, side="left")
 
     def _navigate_next(self, event=None):
+
         self.current_index += 1
 
         if self.current_index > len(self.frame_order) - 1:
@@ -115,17 +124,16 @@ class SettingsWizard(tk.Tk):
             previous_frame.pack(fill="both", expand=True)
             self.current_frame = previous_frame
 
+    def _try_save_frame_data(frame):
+        if hasattr(frame, "entry_data"):
+            SaveFileManager.save(frame.__class__.__name__, frame.entry_data)
+
     def _quit(self):
         self.destroy()
 
-class SaveFileManager():
-    def save(key, value):
-        pass
-
-    def load(key):
-        pass
-
 panel_list = [SheetPanel, SaveDestinationPanel]
 root = SettingsWizard(panel_list)
+SaveFileManager.save("test", "hello world")
+SaveFileManager.save("test", "hello world2")
 
 root.mainloop()
