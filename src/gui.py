@@ -9,15 +9,18 @@ class SheetPanel(tk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
-        sheet_label = tk.Label(self, text="Google sheet url that holds your card data.", font=("Arial", 12))
-        sheet_label.pack(pady=20, anchor="w")
+        self.sheet_label = tk.Label(self, text="Google sheet url that holds your card data.", font=("Arial", 12))
+        self.sheet_label.pack(pady=20, anchor="w")
 
-        sheet_entry = tk.Entry(self, width=30)
-        sheet_entry.pack(fill="x", expand=True)
+        self.sheet_entry = tk.Entry(self, width=30)
+        self.sheet_entry.pack(fill="x", expand=True)
 
     @property
-    def entry_data():
-        pass
+    def entry_data(self) -> dict:
+        data: dict = {}
+        data['sheet_url'] = self.sheet_entry.get()
+
+        return data
 
 class SaveDestinationPanel(tk.Frame):
     def __init__(self, parent):
@@ -46,8 +49,11 @@ class SaveDestinationPanel(tk.Frame):
             self.save_path_entry.insert(0, folder_path)
 
     @property
-    def entry_data():
-        pass
+    def entry_data(self) -> dict:
+        data: dict = {}
+        data['xml_save_path'] = self.save_path_entry.get()
+        
+        return data
 
 class SettingsWizard(tk.Tk):
     def __init__(self, config_frames: list[type[tk.Frame]]):
@@ -81,6 +87,7 @@ class SettingsWizard(tk.Tk):
     def _navigate_next(self, event=None):
 
         self.current_index += 1
+        SettingsWizard._try_save_frame_data(self.current_frame)
 
         if self.current_index > len(self.frame_order) - 1:
             self._quit()
@@ -112,7 +119,7 @@ class SettingsWizard(tk.Tk):
             self.current_frame.pack_forget()
 
         self.frame_stack.append(frame_to_push)
-        frame_to_push.pack(fill="both", expand=True)
+        frame_to_push.pack(before=self.navigation_frame, fill="both", expand=True)
         self.current_frame = frame_to_push
 
     def _pop_frame(self):
@@ -124,7 +131,8 @@ class SettingsWizard(tk.Tk):
             previous_frame.pack(fill="both", expand=True)
             self.current_frame = previous_frame
 
-    def _try_save_frame_data(frame):
+    @staticmethod
+    def _try_save_frame_data(frame: tk.Frame):
         if hasattr(frame, "entry_data"):
             SaveFileManager.save(frame.__class__.__name__, frame.entry_data)
 
@@ -133,7 +141,7 @@ class SettingsWizard(tk.Tk):
 
 panel_list = [SheetPanel, SaveDestinationPanel]
 root = SettingsWizard(panel_list)
-SaveFileManager.save("test", "hello world")
-SaveFileManager.save("test", "hello world2")
+# SaveFileManager.save("test", "hello world")
+# SaveFileManager.save("test", "hello world2")
 
 root.mainloop()
