@@ -9,11 +9,29 @@ class SheetPanel(tk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
-        self.sheet_label = tk.Label(self, text="Google sheet url that holds your card data.", font=("Arial", 12))
+        self.entry_list: list[tk.Entry] = []
+        self.sheet_label = tk.Label(master=self, text="Google sheet url that holds your card data.", font=("Arial", 12))
         self.sheet_label.pack(pady=20, anchor="w")
 
-        self.sheet_entry = tk.Entry(self, width=30)
-        self.sheet_entry.pack(fill="x", expand=True)
+        self.new_entry_btn = tk.Button(self, text="New Entry", command=self._new_entry)
+        self.new_entry_btn.pack(anchor='e')
+        
+        self._new_entry()
+
+    def _new_entry(self):
+        entry_frame = tk.Frame(master=self)
+        entry_frame.pack(before=self.new_entry_btn, fill="x", expand=True)
+
+        new_entry = tk.Entry(master=entry_frame)
+        new_entry.pack(fill="x", expand=True, side="left")
+        self.entry_list.append(new_entry)
+
+        delete_btn = tk.Button(master=entry_frame, text='X', command=lambda: self._remove_entry(master_frame=entry_frame, entry=new_entry))
+        delete_btn.pack(side="left")
+
+    def _remove_entry(self, master_frame: tk.Frame, entry: tk.Entry):
+        self.entry_list.remove(entry)
+        master_frame.destroy()
 
     @property
     def entry_data(self) -> dict:
@@ -29,16 +47,16 @@ class SaveDestinationPanel(tk.Frame):
 
     def create_widgets(self):
 
-        self.save_path_label = tk.Label(self, text="Where do you want the XML saved to?", font=("Ariel", 12))
+        self.save_path_label = tk.Label(master=self, text="Where do you want the XML saved to?", font=("Ariel", 12))
         self.save_path_label.pack(pady=20, anchor="w")
 
-        self.save_path_entry_frame = tk.Frame(self)
+        self.save_path_entry_frame = tk.Frame(master=self)
         self.save_path_entry_frame.pack(fill="x", expand=True)
 
-        self.save_path_entry = tk.Entry(self.save_path_entry_frame)
+        self.save_path_entry = tk.Entry(master=self.save_path_entry_frame)
         self.save_path_entry.pack(side="left", fill="x", expand=True)
 
-        self.browse_button = tk.Button(self.save_path_entry_frame, text="Browse", command=lambda:self._browse_folder())
+        self.browse_button = tk.Button(master=self.save_path_entry_frame, text="Browse", command=lambda:self._browse_folder())
         self.browse_button.pack(side="right")
 
     def _browse_folder(self):
@@ -141,7 +159,5 @@ class SettingsWizard(tk.Tk):
 
 panel_list = [SheetPanel, SaveDestinationPanel]
 root = SettingsWizard(panel_list)
-# SaveFileManager.save("test", "hello world")
-# SaveFileManager.save("test", "hello world2")
 
 root.mainloop()
