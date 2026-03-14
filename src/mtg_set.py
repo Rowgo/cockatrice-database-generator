@@ -35,6 +35,8 @@ class MtgCard:
     rarity: str
 
     art : str = 'https://ibb.co/mVKTwBqW' # this art is a placeholder
+    card_image = None
+    card_image_url = None
     ability : str = ''
     pt : str = None
     """this tag can be omited from the data base."""
