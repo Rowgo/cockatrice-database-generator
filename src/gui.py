@@ -15,7 +15,7 @@ class SheetPanel(tk.Frame):
 
         self.new_entry_btn = tk.Button(self, text="New Entry", command=self._new_entry)
         self.new_entry_btn.pack(anchor='e')
-        
+
         self._new_entry()
 
     def _new_entry(self):
@@ -36,7 +36,12 @@ class SheetPanel(tk.Frame):
     @property
     def entry_data(self) -> dict:
         data: dict = {}
-        data['sheet_url'] = self.sheet_entry.get()
+        sheet_urls: list = []
+
+        for entry in self.entry_list:
+            sheet_urls.append(entry.get())
+
+        data['sheet_urls'] = sheet_urls
 
         return data
 
@@ -102,6 +107,25 @@ class SettingsWizard(tk.Tk):
         self.next_button = tk.Button(self.navigation_frame, text="Next", command=lambda:self._navigate_next())
         self.next_button.pack(padx=20, side="left")
 
+    def _push_frame(self, frame_to_push: tk.Frame):
+        """Put a frame onto the stack and make it visible"""
+        if self.current_frame:
+            self.current_frame.pack_forget()
+
+        self.frame_stack.append(frame_to_push)
+        frame_to_push.pack(before=self.navigation_frame, fill="both", expand=True)
+        self.current_frame = frame_to_push
+
+    def _pop_frame(self):
+        """Return to the previous frame"""
+        self.current_frame.pack_forget()
+        previous_frame: tk.Frame = self.frame_stack.pop()
+
+        if previous_frame:
+            previous_frame.pack(fill="both", expand=True)
+            self.current_frame = previous_frame
+            self.current_frame = previous_frame
+
     def _navigate_next(self, event=None):
 
         self.current_index += 1
@@ -130,24 +154,6 @@ class SettingsWizard(tk.Tk):
 
         if self.current_index == 0:
             self.back_button.pack_forget
-
-    def _push_frame(self, frame_to_push: tk.Frame):
-        """Put a frame onto the stack and make it visible"""
-        if self.current_frame:
-            self.current_frame.pack_forget()
-
-        self.frame_stack.append(frame_to_push)
-        frame_to_push.pack(before=self.navigation_frame, fill="both", expand=True)
-        self.current_frame = frame_to_push
-
-    def _pop_frame(self):
-        """Return to the previous frame"""
-        self.current_frame.pack_forget()
-        previous_frame: tk.Frame = self.frame_stack.pop()
-
-        if previous_frame:
-            previous_frame.pack(fill="both", expand=True)
-            self.current_frame = previous_frame
 
     @staticmethod
     def _try_save_frame_data(frame: tk.Frame):
