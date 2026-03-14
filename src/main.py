@@ -23,7 +23,7 @@ if __name__ == '__main__':
         GoogleSheetUrl(sheet_name='colorless_cards', doc_url=DOC_URL, export_type=EXPORT_TYPE, sheet_id='2064516960')
     ]
 
-    folder = Path('wfa_sheets')
+    folder: Path = Path('wfa_sheets')
     setinfo_path = SetDownloader.pull_and_save(SETINFO_URL, folder)
 
     cardsheet_path_list : list[Path] = []
